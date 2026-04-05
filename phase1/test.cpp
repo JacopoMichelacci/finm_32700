@@ -56,7 +56,7 @@ bool test_mat_mat_transposed() {
     const int rowsB = 2; 
     const int colsB = 2; 
     const double matrixA[rowsA * colsA] = { 1,2,3,4};
-    const double matrixB[rowsB * colsB] = {5,6,7,8};
+    const double matrixB[rowsB * colsB] = {5,7,6,8};
     double result[rowsA * colsB] = {0,0,0,0};
     const double expected[rowsA * colsB] = {19,22,43,50};
     multiply_mm_transposed_b(matrixA, rowsA, colsA, matrixB, rowsB, colsB, result);

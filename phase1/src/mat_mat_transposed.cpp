@@ -12,7 +12,7 @@ void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const
     for (int i = 0; i < rowsA; ++i) {
         for (int j = 0; j < rowsB; ++j) {
             for  (int k = 0; k < colsA; ++k) {
-                result[i + colsB * j] += matrixA[i + k * colsA] * matrixB_transposed[j + k * colsB];
+                result[i * rowsB + j] += matrixA[i * colsA + k] * matrixB_transposed[j * colsB + k];
             }
         }
     }

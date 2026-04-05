@@ -50,3 +50,7 @@ core
 # OS files
 .DS_Store
 Thumbs.db
+
+
+# trace folder
+*.trace

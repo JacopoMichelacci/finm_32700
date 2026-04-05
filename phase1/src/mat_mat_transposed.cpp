@@ -5,9 +5,6 @@ using namespace std;
 #include "mat_mat_transposed.hpp"
 
 void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const double* matrixB_transposed, int rowsB, int colsB, double* result) {
-
-    auto start = chrono::high_resolution_clock::now();
-
     // loop rows A
     for (int i = 0; i < rowsA; ++i) {
         for (int j = 0; j < rowsB; ++j) {
@@ -16,10 +13,4 @@ void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const
             }
         }
     }
-
-    auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::nanoseconds>(end-start);
-
-    std::cout << "mm_transposed: " << duration.count() << "ns" << std::endl;
-
 }

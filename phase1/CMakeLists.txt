@@ -13,6 +13,7 @@ add_executable(
     src/mat_vec_col_major.cpp
     src/mat_mat_naive.cpp
     src/mat_mat_transposed.cpp
+    src/mat_mat_tiled.cpp
 )
 
 target_include_directories(

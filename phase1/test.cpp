@@ -10,6 +10,7 @@
 #include "mat_vec_row_major.hpp"
 #include "mat_mat_naive.hpp"
 #include "mat_mat_transposed.hpp"
+#include "mat_mat_tiled.hpp"
 
 struct benchresult { 
     double avg; 
@@ -123,4 +124,9 @@ void run_all_behcmarks(int size) {
         multiply_mv_row_major(matrixA.data(), size, size, vector.data(), vecresult.data());
     });
     std::cout << "Row Major MV: " << row_major_mv.avg << " microseconds (± " << row_major_mv.std << " microseconds)" << std::endl;
+    auto tiled = benchmark([&](){ 
+        std::fill(matresult.begin(), matresult.end(), 0.0);
+        multiply_mm_tiled(matrixA.data(), size, size, matrixB.data(), size, size, matresult.data(), 64);
+    });
+    std::cout << "Tiled MM: " << tiled.avg << " microseconds (± " << tiled.std << " microseconds)" << std::endl;
 }

@@ -11,6 +11,8 @@ add_executable(
     test.cpp
     src/mat_vec_row_major.cpp
     src/mat_vec_col_major.cpp
+    src/mat_mat_naive.cpp
+    src/mat_mat_transposed.cpp
 )
 
 target_include_directories(

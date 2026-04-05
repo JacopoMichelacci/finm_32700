@@ -8,4 +8,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
+    src/mat_vec_row_major.cpp
 )

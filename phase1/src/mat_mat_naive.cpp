@@ -17,7 +17,7 @@ void multiply_mm_naive(const double* matrixA, int rowsA, int colsA, const double
     }
 
     auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(end-start);
 
-    std::cout << "mm_naive: " << duration.count() << "ms" << std::endl;
+    std::cout << "mm_naive: " << duration.count() << "ns" << std::endl;
 }

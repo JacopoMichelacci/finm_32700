@@ -16,9 +16,9 @@ void multiply_mv_col_major(const double* matrix, int rows, int cols, const doubl
     }
 
     auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(end-start);
 
-    std::cout << "mv_col-maj: " << duration.count() << "ms" << std::endl;
+    std::cout << "mv_col-maj: " << duration.count() << "ns" << std::endl;
 }
 
 

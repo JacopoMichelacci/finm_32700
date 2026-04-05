@@ -18,8 +18,8 @@ void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const
     }
 
     auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(end-start);
 
-    std::cout << "mm_transposed: " << duration.count() << "ms" << std::endl;
+    std::cout << "mm_transposed: " << duration.count() << "ns" << std::endl;
 
 }

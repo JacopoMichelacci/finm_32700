@@ -6,8 +6,7 @@ using namespace std;
 
 void multiply_mm_naive(const double* matrixA, int rowsA, int colsA, 
                         const double* matrixB, int rowsB, int colsB, 
-                        double* result,
-                        chrono::nanoseconds& time_elapsed){
+                        double* result){
                             
     for(int i = 0; i < rowsA; i++){
         for(int j = 0; j < colsB; j++){

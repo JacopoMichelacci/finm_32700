@@ -1,6 +1,12 @@
+#include <iostream>
 #include <chrono>
+using namespace std;
+
+#include "mat_mat_transposed.hpp"
 
 void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const double* matrixB_transposed, int rowsB, int colsB, double* result) {
+
+    auto start = chrono::high_resolution_clock::now();
 
     // loop rows A
     for (int i = 0; i < rowsA; ++i) {
@@ -10,5 +16,10 @@ void multiply_mm_transposed_b(const double* matrixA, int rowsA, int colsA, const
             }
         }
     }
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::milliseconds>(end-start);
+
+    std::cout << "mm_transposed: " << duration.count() << "ms" << std::endl;
 
 }

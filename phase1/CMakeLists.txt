@@ -8,5 +8,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
+    test.cpp
     src/mat_vec_row_major.cpp
+    src/mat_mat_transposed.cpp
+)
+
+
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    include
 )

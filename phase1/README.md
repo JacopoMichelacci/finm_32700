@@ -5,6 +5,10 @@ Jacopo Michelacci and Karsten Kropp
  - to build and run the project: ./run.sh
  - to run the build: ./build/phase1
 
+ - to run the trace: /runinfo.sh
+ - to open the trace report after running the runinfo.sh: open phase1.trace
+
+
 ## Findings and Reflection: 
 
 In attempting to complete this first part of the project our group initially started with considering the storage and basic math operations that we would need to consider to complete the linear algebra processes of matrix vector and matrix matrix multiplication. After completing 
@@ -46,15 +50,14 @@ We bench marked with various sizes and the results showed that tranposed MM was 
 From there we then expanded the approach by including the tiling approach of matrix multiplication. This interestingly, while expected to improve performance, was slower than even naive matrix multiplication. When considering this process and trying to understand why this tiling approach did not help, we believed that the fact that newer macbooks have enough space in the cache that this increase in the number of for loops in the function, from 3 to 6, compared to naive and transposed approach led to this increase in overhead of running these for loops compared to the other approaches we used. 
 
 ### Part 3.
- 1. pointers store an address while references are aliases to variables in the program. References are fixed (they cannot be changed) and
-    cannot be initialized null, while pointers can be reassigned and can be initialized as nullptr
+ 1. Pointers store memory addresses, while references act as aliases to existing variables. A reference must be initialized when it is declared, cannot be null, and cannot later refer to a different object. A pointer, by contrast, can be reassigned, can be set to nullptr, and provides more explicit control over memory access.
  2. In the row-major matrix-vector code, matrix[i*cols + j] with j in the inner loop reads each row contiguously, so cache locality is good.
     In naive matrix-matrix, A[i*colsA + k] is contiguous, but B[k*colsB + j] walks down a column of B with a stride, so cache use is worse.
     In transposed-B, B_transposed[j*rowsB + k] is also contiguous in the inner loop, so both operands are read sequentially. That matched the benchmark/profiler: multiply_mm_naive was about 1.88 s (56.3%), while multiply_mm_transposed_b was about 1.26 s (37.8%), showing better locality and lower runtime.
  3. CPU caches are small, fast memories between the CPU and RAM: L1 is the smallest and fastest, L2 is larger and a bit slower, and L3 is the largest and shared across 
     cores but slower than L1/L2.
     Spatial locality means nearby memory locations are likely used together; temporal locality means recently used data is likely used again soon.
- 4.
- 5. 
+ 4. Memory alignment means placing data at addresses that match natural hardware boundaries, such as 16-, 32-, or 64-byte multiples. This matters because aligned data  is easier for the CPU to load into cache lines and SIMD registers, while unaligned data can require extra work or extra memory accesses. In these experiments, the performance difference between aligned and unaligned memory was not as large as the difference caused by the access pattern itself. The main speedup came from better cache locality, especially in the transposed-B version, so alignment had only a secondary effect.
+ 5. Compiler optimizations improve performance by generating more efficient machine code, for example through better register use, loop simplification, and reduced overhead. In my experiments, increasing the optimization level still made both the baseline and optimized implementations faster, but the optimized version remained better mainly because of its improved memory access pattern, not because of manual inlining. A drawback is that debugging becomes harder and the compiled code is less straightforward to interpret.
  6. The main performance bottlenecks we faced both being on macOS systems indicated that the main issue was CPU stall time most likely caused by the L1 and L2 cache misses. Specifically in the naive approach, spending a vast majority of the time getting data from matrix B had to be fetched from main memory which is slower. This made the approach of jumping down a row with an offset, mathematically work, but in terms of accessing the data was much slower. 
  7. In terms of the teamwork aspect of our approach we used a modular approach of working together initially to think about how we would tackle the problems and then divided parts up and came back together to discuss what we were doing. This established an early baseline of working individually but we also worked in person and were able to speak directly next to each other whenever we had a moment where we needed to speak a bit more. THis division also allowed us to work on different files at the same time which also made it easier to push to github and avoid any merging conflicts and to tackle the work equally. The most difficult thing was making sure that the implementations we individually were producing could work accross the various files that we were producing and that the CMake for example was up to date with header file names and our dependencies matched. The most collaborative aspect was working through the initial problem of how we would initially approach the problem of completing matrix manipulation and multiplication and this ended up paying off as it streamlined the rest of the process going down the line with the later work that we did and ensuring we were both on the same page

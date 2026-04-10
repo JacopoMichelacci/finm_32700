@@ -57,6 +57,7 @@ public:
         : market_data(feed) {}
 
     void process() {
+        int signal1_count = 0, signal2_count = 0, signal3_count = 0;
         for (const auto& tick : market_data) {
             // Update history
             updateHistory(tick);
@@ -64,9 +65,22 @@ public:
             // Apply signals
             bool buy = false, sell = false;
 
-            if (signal1(tick)) buy = true;
-            if (signal2(tick)) { if (tick.price < getAvg(tick.instrument_id)) buy = true; else sell = true; }
-            if (signal3(tick)) buy = true;
+            if (signal1(tick)){
+                buy = true; 
+                signal1_count++;
+            } 
+            if (signal2(tick)) { 
+                if (tick.price < getAvg(tick.instrument_id)) {
+                    buy = true; 
+                } else {
+                    sell = true;
+                }
+                signal2_count++;
+            } 
+            if (signal3(tick)){
+                buy = true; 
+                signal3_count++;
+            } 
 
             if (buy || sell) {
                 auto now = std::chrono::high_resolution_clock::now();
@@ -77,6 +91,9 @@ public:
                 latencies.push_back(latency);
             }
         }
+        std::cout << "signal 1 triggered: " << signal1_count << " times\n";
+        std::cout << "signal 2 triggered: " << signal2_count << " times\n";
+        std::cout << "signal 3 triggered: " << signal3_count << " times\n";
     }
 
     void reportStats() {
@@ -121,7 +138,7 @@ private:
     bool signal2(const MarketData& tick) {
         if (price_history[tick.instrument_id].size() < 5) return false;
         double avg = getAvg(tick.instrument_id);
-        return tick.price < avg * 0.98 || tick.price > avg * 1.02;
+        return tick.price < avg * 0.70 || tick.price > avg * 1.30;
     }
 
     // Signal 3: Simple momentum
@@ -138,7 +155,7 @@ private:
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
-    std::vector<MarketData> feed;
+    {std::vector<MarketData> feed;
     MarketDataFeed generator(feed);
 
     auto start = std::chrono::high_resolution_clock::now();
@@ -152,7 +169,24 @@ int main() {
 
     engine.reportStats();
     std::cout << "\nTotal Runtime (ms): " << runtime << std::endl;
+    }
+    {
+    std::cout << "running with 10x more data" << std::endl;
+    std::vector<MarketData> feed;
+    MarketDataFeed generator(feed);
 
+    auto start = std::chrono::high_resolution_clock::now();
+    generator.generateData(1000000);
+
+    TradeEngine engine(feed);
+    engine.process();
+
+    auto end = std::chrono::high_resolution_clock::now();
+    auto runtime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+
+    engine.reportStats();
+    std::cout << "\nTotal Runtime (ms): " << runtime << std::endl;
+    }
     return 0;
 }
 

@@ -171,7 +171,7 @@ int main() {
     std::cout << "\nTotal Runtime (ms): " << runtime << std::endl;
     }
     {
-    std::cout << "running with 10x more data" << std::endl;
+    std::cout << "\n-------------------\nRunning with 10x more data\n" << std::endl;
     std::vector<MarketData> feed;
     MarketDataFeed generator(feed);
 

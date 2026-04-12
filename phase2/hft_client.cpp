@@ -13,6 +13,8 @@ using namespace std;
 #define SERVER_PORT 12345
 #define BUFFER_SIZE 1024
 
+std::deque<float> priceHistory;
+
 void receiveAndRespond(int socketFd, const string& name) {
     char buffer[BUFFER_SIZE];
 
@@ -42,11 +44,35 @@ void receiveAndRespond(int socketFd, const string& name) {
         // Simulate reaction delay
         this_thread::sleep_for(chrono::milliseconds(100 + rand() % 300));
 
-        // Send order (price ID)
-        string order = to_string(priceId);
-        send(socketFd, order.c_str(), order.length(), 0);
+        // update Price History
+        if (priceHistory.size() >= 3) {
+            priceHistory.pop_back();
+        }
+        priceHistory.push_front(price);
 
-        cout << "📤 Sent order for price ID: " << priceId << endl;
+        // check momentum
+        bool mom_up = false;
+        bool mom_dn = false;
+        if (priceHistory.size() == 3) {
+            float a = priceHistory[0];
+            float b = priceHistory[1];
+            float c = priceHistory[2];
+
+            if (a > b && b > c) {mom_up = true; cout << "Momentum up! Sending order for price ID " << priceId << endl;}
+            else if (a < b && b < c) {mom_dn = true; cout << "Momentum down! Sending order for price ID " << priceId << endl;}
+
+            // hit
+            if (mom_up || mom_dn) {
+                this_thread::sleep_for(chrono::milliseconds(10 + rand() % 50));
+
+                // Send order (price ID)
+                string order = to_string(priceId);
+                send(socketFd, order.c_str(), order.length(), 0);
+                
+                cout << "📤 Sent order for price ID: " << priceId << endl;
+            }
+            else {cout << "No momentum. Ignoring price ID " << priceId << endl;}
+        }
     }
 
     close(socketFd);

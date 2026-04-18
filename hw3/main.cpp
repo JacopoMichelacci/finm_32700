@@ -52,6 +52,20 @@ public:
     Trade& operator*() {return *ptr;}
 };
 
+class TradeHandle {
+    Trade* ptr;
+
+public:
+    TradeHandle(Trade* p);
+    ~TradeHandle();
+    TradeHandle(const TradeHandle&) = delete;
+    TradeHandle& operator=(const TradeHandle&) = delete;
+    TradeHandle(TradeHandle&& other);
+    TradeHandle& operator=(TradeHandle&& other);
+    Trade* operator->();
+    Trade& operator*();
+};
+
 
 int main() {
 

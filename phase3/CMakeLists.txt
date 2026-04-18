@@ -9,6 +9,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_executable(
     ${PROJECT_NAME}
     main.cpp
+
+    order_manager.cpp
+    MarketSnapshot.cpp
 )
 
 

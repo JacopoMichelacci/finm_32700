@@ -1,7 +1,13 @@
 #include "feed_parser.h"
+#include "MarketSnapshot.h"
+#include "order_manager.hpp"
+#include <vector>
 
 int main() {
-    auto feed = load_feed("sample_feed.txt");
+    auto feed = load_feed("_data/sample_feed.txt");
+
+    MarketSnapshot snapshot;
+    OrderManager order_manager;
 
     for (const auto& event : feed) {
         event.print();

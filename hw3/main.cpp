@@ -21,6 +21,36 @@ struct Trade {
     }
 };
 
+class TradeHandle {
+    Trade *ptr;
+
+public:
+    TradeHandle(Trade* pointer) : ptr(pointer) {}
+    ~TradeHandle() {
+        std::cout << "destructor: tradehandle\n";
+        delete ptr;
+    }
+
+    TradeHandle(const TradeHandle&) = delete;
+    TradeHandle& operator=(const TradeHandle&) = delete;
+
+    TradeHandle(TradeHandle&& other) : ptr(other.ptr) {
+        other.ptr = nullptr;
+    }
+
+    TradeHandle& operator=(TradeHandle&& other) {
+        if (this != &other) {
+            delete ptr;
+            ptr = other.ptr;
+            other.ptr = nullptr;
+        }
+
+        return *this;
+    }
+
+    Trade* operator->() {return ptr;}
+    Trade& operator*() {return *ptr;}
+};
 
 
 int main() {
@@ -46,7 +76,7 @@ int main() {
     }
 
     //////////////////// PART 2 ////////////////////////////////////
-    
+
     {
     std::cout << "\n////////////////// PART 2 //////////////////";
 
@@ -72,6 +102,22 @@ int main() {
     trades[2].print();
 
     delete[] trades;
+    }
+
+    //////////////////// PART 3 ////////////////////////////////////
+
+    {
+    std::cout << "\n////////////////// PART 3 //////////////////";
+    TradeHandle h1(new Trade("CIAO", 63.8));
+    TradeHandle h2(new Trade("AU", 70.8));
+    
+    std::cout << "\ncall move constr: \n";
+    TradeHandle h3(std::move(h2));      // move constructor
+    
+    std::cout << "\ncall move assignment: \n";
+    h1 = std::move(h3);                 // move assignment   
+    
+    std::cout << "\ngoing out of scope: \n";
     }
 
     std::cout << "\nprogram ended successfully!";

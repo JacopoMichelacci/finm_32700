@@ -12,9 +12,4 @@ This project demonstrates advanced C++ template features for low-latency financi
 
 ## Building
 
-
-mkdir build
-cd build
-cmake ..
-make
-./HFTTemplateHomework
+to build run main do: ./run.sh

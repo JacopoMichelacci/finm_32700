@@ -12,4 +12,4 @@ This project demonstrates advanced C++ template features for low-latency financi
 
 ## Building
 
-to build run main do: ./run.sh
+to build and run main do: ./run.sh

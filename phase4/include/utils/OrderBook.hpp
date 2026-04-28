@@ -11,6 +11,7 @@ struct Order {
     PriceType price;
     int quantity;
     bool is_buy;
+    OrderStatus status;
 };
 
 template<typename PriceType, typename OrderIdType>

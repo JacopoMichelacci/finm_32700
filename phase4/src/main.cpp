@@ -9,6 +9,7 @@
 
 #include "Order.hpp"
 #include "OrderBook.hpp"
+#include "MatchingEngine.hpp"
 
 using OrderType = Order<double, int>;
 
@@ -30,6 +31,10 @@ int main() {
     for (auto ticks : ticks_list) {
         // create orderbook
         OrderBook <double, int> order_book;
+        OrderManager<double, int> order_manager(order_book);
+
+        // create mathching engine
+        MatchingEngine<double, int> matching_engine;
 
         for (int i = 0; i < ticks; ++i) {
             // gen num or orders sent in x tick
@@ -47,13 +52,12 @@ int main() {
             for (int i=0; i < num_trades; ++i) {
                 qty_of_trade = qty_dist(gen);
 
-                ord_vector.emplace_back(i, "AAPL", 150.0 + (i % 5), qty_of_trade, i % 2 == 0);
+                order_manager.newOrder(i, "AAPL", 150.0 + (i % 5), qty_of_trade, i % 2 == 0);
             }
             // Simulated tick + order match (replace with real logic)
-            for (auto ord : ord_vector) {
-                order_book.addOrder(ord);
-            }
-            // simulate match logic here
+
+            matching_engine.run(order_book, order_manager);
+
 
             latencies.push_back(timer.elapsed());
         }

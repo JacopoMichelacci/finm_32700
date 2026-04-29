@@ -4,15 +4,7 @@
 #include <algorithm>
 #include <iostream>
 
-template<typename PriceType, typename OrderIdType>
-struct Order {
-    OrderIdType id;
-    std::string symbol;
-    PriceType price;
-    int quantity;
-    bool is_buy;
-    OrderStatus status;
-};
+#include "Order.hpp"
 
 template<typename PriceType, typename OrderIdType>
 class OrderBook {
@@ -91,11 +83,11 @@ public:
     // DEBUG
     // -------------------------
     void printBook() const {
-        std::cout << "\nBUY BOOK\n";
+        std::cout << "\nBID BOOK\n";
         for (auto& [price, order] : buyBook)
             std::cout << price << " x " << order.quantity << "\n";
 
-        std::cout << "\nSELL BOOK\n";
+        std::cout << "\nASK BOOK\n";
         for (auto& [price, order] : sellBook)
             std::cout << price << " x " << order.quantity << "\n";
     }

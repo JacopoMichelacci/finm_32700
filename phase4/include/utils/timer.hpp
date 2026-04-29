@@ -12,18 +12,18 @@ public:
         : start_(std::chrono::high_resolution_clock::now()), time_measure_type(std::move(time_measure_type_)) {}
 
 
-    inline void start_timer() {
+    inline void start() {
         start_ = std::chrono::high_resolution_clock::now();
     }
 
-    inline long long time_elapsed() {
+    inline long long elapsed() {
         end_ = std::chrono::high_resolution_clock::now();
 
         return time_measure_();   
     }
 
     template <typename F>
-    long long func_elapsed(F&& f, std::size_t iter) {
+    long long f_elapse(F&& f, std::size_t iter) {
         long long sum = 0;
 
         for (std::size_t i=0; i < iter; ++i) {
@@ -34,7 +34,7 @@ public:
             sum += time_measure_();
         }
 
-        return sum;
+        return sum / iter;
     }
 private:
     std::chrono::high_resolution_clock::time_point start_;

@@ -13,7 +13,7 @@ int main() {
 
     OrderBook order_book;
 
-    std::string time_measure = "nanoseconds";
+    std::string time_measure = "microseconds";
     Timer timer(time_measure);
 
     {
@@ -31,6 +31,23 @@ int main() {
     long long elapsed = timer.f_elapse([&](){stressTest(order_book, 100);}, 100);
 
     std::cout << "Time Elapsed for " << n_orders << " orders in stress test: " << elapsed << time_measure << std::endl;
+    }
+
+
+    {
+    // fill elapse vector with runnign time
+    std::vector<long long> order_stress_vector = {1000, 5000, 10000, 50000, 100000};
+    std::vector<long long> time_elapse_vector;
+
+    for (int i=0; i < order_stress_vector.size(); ++i) {
+        time_elapse_vector.push_back(timer.f_elapse([&](){stressTest(order_book, order_stress_vector[i]);}, 10));
+    }
+
+    // print out the elapse vector
+    std::cout << "Time elapsed for different sizes of stress: \n";
+    for (auto val : time_elapse_vector) {
+        std::cout << val <<  ", ";
+    }
     }
 
     return 0;

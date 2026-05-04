@@ -8,12 +8,12 @@
 
 class OrderBook {
 public:
-    bool addOrder(const Order& order) {
+    bool addOrder(Order&& order) {
         auto [it, inserted] = orderContainer.emplace(order.id, std::move(order));
         
         if (!inserted) { return false; }
 
-        orderLevels[order.price][order.id] = &(it->second);
+        orderLevels[it->second.price][it->second.id] = &(it->second);
         return true;
     }
 
@@ -59,7 +59,7 @@ public:
         if ((it_level->second).empty()) { orderLevels.erase(it_level); }
         
         //del order from general container
-        orderContainer.erase(order.id);
+        orderContainer.erase(it);
 
         return true;
     }

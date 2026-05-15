@@ -1,0 +1,1 @@
+g++ -std=c++20 src/server/main.cpp -o ./src/server/server && ./src/server/server

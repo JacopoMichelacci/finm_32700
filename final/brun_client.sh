@@ -1,0 +1,1 @@
+g++ -std=c++20 ./src/client/main.cpp -o ./src/client/client && ./src/client/client
